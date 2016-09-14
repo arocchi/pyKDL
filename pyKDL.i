@@ -1,5 +1,6 @@
 /* File : pyKDL.i */
 %module pyKDL
+%include "typemaps.i"
 
 %{
 /* Note : always include headers following the inheritance order */
@@ -22,6 +23,14 @@
 #else
     #define IMETHOD
 #endif
+
+
+namespace KDL
+{
+%apply KDL::Vector& OUTPUT { KDL::Vector& axis };
+%apply double& OUTPUT { double& x,double& y,double& z, double& w };
+%apply double& OUTPUT { double& roll,double& pitch,double& yaw };
+}
 
 %ignore KDL::Frame2::Integrate(const Twist& t_this,double frequency);
 %ignore KDL::Frame2::Make4x4(double* d);
