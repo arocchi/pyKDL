@@ -63,6 +63,15 @@
     Frame __mul__(const Frame& rhs) {
         return *($self) * rhs;
     }
+
+    Vector p() {
+        return $self->p;
+    }
+
+    Rotation M() {
+        return $self->M;
+    }
+
 }
 
 %include <kdl/frames.hpp>
