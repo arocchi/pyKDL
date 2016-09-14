@@ -73,11 +73,11 @@ namespace KDL
         return *($self) * rhs;
     }
 
-    Vector p() {
+    Vector& p() {
         return $self->p;
     }
 
-    Rotation M() {
+    Rotation& M() {
         return $self->M;
     }
 
