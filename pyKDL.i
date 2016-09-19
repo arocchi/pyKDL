@@ -1,6 +1,7 @@
 /* File : pyKDL.i */
 %module pyKDL
 %include "typemaps.i"
+%include "std_string.i"
 
 %{
 /* Note : always include headers following the inheritance order */
@@ -8,6 +9,8 @@
 #include <kdl/utilities/kdl-config.h>
 #include <kdl/utilities/utility.h>
 #include <kdl/frames.hpp>
+#include <kdl/frames_io.hpp>
+#include <sstream>
 %}
 
 /* Note : always include headers following the inheritance order */
@@ -48,6 +51,12 @@ namespace KDL
     Vector __mul__(const Vector& rhs) {
         return *($self) * rhs;
     }
+
+    std::string __repr__() {
+        std::stringstream ss;
+        ss << *($self);
+        return ss.str();
+    }
 }
 
 
@@ -60,6 +69,12 @@ namespace KDL
 
     Rotation __mul__(const Rotation& rhs) {
         return *($self) * rhs;
+    }
+
+    std::string __repr__() {
+        std::stringstream ss;
+        ss << *($self);
+        return ss.str();
     }
 }
 
@@ -81,6 +96,11 @@ namespace KDL
         return $self->M;
     }
 
+    std::string __repr__() {
+        std::stringstream ss;
+        ss << *($self);
+        return ss.str();
+    }
 }
 
 %include <kdl/frames.hpp>
