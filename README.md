@@ -1,5 +1,5 @@
 # pyKDL
-A simple python binding to KDL using SWIG, using numpy arrays.
+SWIG Python bindings to KDL, making use of numpy arrays.
 
 ## Features
 An extensive list of features implemented at this time are explained in the following code.
