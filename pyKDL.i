@@ -78,7 +78,23 @@ namespace KDL
     }
 }
 
+%typemap(in) (int matrix_i_row, int matrix_i_col) {
+    if (!PyTuple_Check($input)) {
+        PyErr_SetString(PyExc_ValueError, "Error: expecting a tuple (m[1,2] is equivalent to m[(1,2)])");
+        return NULL;
+    }
+
+    if (PyTuple_Size($input) != 2 ) {
+        PyErr_SetString(PyExc_ValueError, "Matrix elements are accessed by using two integers m[i_row,i_col]");
+        return NULL;
+    }
+
+    $1 = (int)PyInt_AsLong(PyTuple_GetItem($input,0));   /* int i */
+    $2 = (int)PyInt_AsLong(PyTuple_GetItem($input,1));   /* int j */
+};
 %ignore KDL::Rotation::data;
+%rename(_set) KDL::Rotation::operator()(int i, int j);
+%rename(_get) KDL::Rotation::operator()(int i, int j) const;
 %rename(assign)  KDL::Rotation::operator=(const Rotation& arg);
 %extend KDL::Rotation {
     Vector __mul__(const Vector& v) const {
@@ -99,6 +115,15 @@ namespace KDL
         npy_intp dims[] = {3, 3};
         return PyArray_SimpleNewFromData(2, dims, NPY_DOUBLE, (void*)$self->data);
     }
+
+    void __setitem__(int matrix_i_row, int matrix_i_col, double value) {
+        $self->operator ()(matrix_i_row,matrix_i_col) = value;
+    }
+
+    double __getitem__(int matrix_i_row, int matrix_i_col) {
+        return $self->operator ()(matrix_i_row,matrix_i_col);
+    }
+
 }
 
 %rename(assign)  KDL::Frame::operator=(const Frame& arg);

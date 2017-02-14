@@ -46,4 +46,10 @@ R3 = Rotation(*R_numpy)
 
 v_numpy = v.ndarray()
 v5 = Vector(*v_numpy)
+
+v.x()           # get 0th element of v
+v.x(1.0)        # set 0th element of v
+
+R[0,0]          # equivalent to R(0,0) in c++
+R[0,0] = 1.0    # equivalent to R(0,0) = 1.0 in c++
 ```
