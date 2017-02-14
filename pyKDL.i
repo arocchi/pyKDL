@@ -1,7 +1,18 @@
 /* File : pyKDL.i */
 %module pyKDL
+
+%{
+#define SWIG_FILE_WITH_INIT
+%}
+
 %include "typemaps.i"
 %include "std_string.i"
+
+%include "numpy.i"
+
+%init %{
+    import_array();
+%}
 
 %{
 /* Note : always include headers following the inheritance order */
@@ -38,8 +49,11 @@ namespace KDL
 %ignore KDL::Frame2::Integrate(const Twist& t_this,double frequency);
 %ignore KDL::Frame2::Make4x4(double* d);
 
+%ignore KDL::Vector::data;
 %rename(assign)  KDL::Vector::operator=( const Vector& arg);
 %extend KDL::Vector {
+    double data[3];
+
     Vector __add__(const Vector& rhs) {
         return *($self) + rhs;
     }
@@ -57,12 +71,16 @@ namespace KDL
         ss << *($self);
         return ss.str();
     }
+
+    const PyObject* ndarray() {
+        npy_intp dims[] = {3};
+        return PyArray_SimpleNewFromData(1, dims, NPY_DOUBLE, (void*)$self->data);
+    }
 }
 
-
+%ignore KDL::Rotation::data;
 %rename(assign)  KDL::Rotation::operator=(const Rotation& arg);
 %extend KDL::Rotation {
-
     Vector __mul__(const Vector& v) const {
         return *($self) * v;
     }
@@ -75,6 +93,11 @@ namespace KDL
         std::stringstream ss;
         ss << *($self);
         return ss.str();
+    }
+
+    const PyObject* ndarray() {
+        npy_intp dims[] = {3, 3};
+        return PyArray_SimpleNewFromData(2, dims, NPY_DOUBLE, (void*)$self->data);
     }
 }
 

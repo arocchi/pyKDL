@@ -5,6 +5,9 @@ SWIG Python bindings to KDL, making use of numpy arrays.
 An extensive list of features implemented at this time are explained in the following code.
 
 ```
+import numpy
+from pyKDL import Frame, Vector, Rotation
+
 f = Frame()
 f0 = Frame(R,v)
 print f
@@ -37,4 +40,10 @@ f_o = f.M()
 print f
 f_p.assign(Vector(1,2,3))
 print f         # frame changed
+
+R_numpy = R.ndarray()
+R3 = Rotation(*R_numpy)
+
+v_numpy = v.ndarray()
+v5 = Vector(*v_numpy)
 ```
