@@ -1,0 +1,1 @@
+include pyKDL.py _pyKDL.pyd
